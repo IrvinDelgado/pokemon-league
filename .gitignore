@@ -8,6 +8,8 @@
 .buildlog/
 .history
 .svn/
+.metadata
+pubspec.lock
 
 # IntelliJ related
 *.iml
@@ -39,3 +41,8 @@ app.*.symbols
 
 # Obfuscation related
 app.*.map.json
+
+# device related
+/android
+/assets
+/ios
