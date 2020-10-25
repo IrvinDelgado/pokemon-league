@@ -1,0 +1,146 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+
+import 'package:pokemon_league/components/nav.dart';
+import 'package:pokemon_league/pages/battle_stats.dart';
+
+class Matches {
+  final String homeUser;
+  final String awayUser;
+  final DocumentReference reference;
+
+  Matches.fromMap(Map<String, dynamic> map, {this.reference})
+      : assert(map['homeUser'] != null),
+        assert(map['awayUser'] != null),
+        homeUser = map['homeUser'],
+        awayUser = map['awayUser'];
+
+  Matches.fromSnapshot(DocumentSnapshot snapshot)
+      : this.fromMap(snapshot.data, reference: snapshot.reference);
+
+  @override
+  String toString() => "Match is <$homeUser:$awayUser>";
+}
+
+Widget userImage(name) {
+  return Container(
+    child: Align(
+      alignment: Alignment.centerLeft,
+      child: Image.asset(
+        'assets/images/userProfiles/' + name + '.jpg',
+        height: 55,
+        width: 85,
+      ),
+    ),
+  );
+}
+
+Widget userInfo(name, record) {
+  return Container(
+    child: RichText(
+        text: TextSpan(
+            text: name,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+              fontSize: 16,
+            ),
+            children: <TextSpan>[
+          TextSpan(
+              text: '\n' + '(' + record + ')',
+              style: TextStyle(
+                fontWeight: FontWeight.normal,
+                color: Colors.grey,
+                fontSize: 12,
+              ))
+        ])),
+  );
+}
+
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        drawer: NavDrawer(),
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text('Home Page'),
+        ),
+        body: Container(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[_buildContainerOfBattles(context)],
+          ),
+        ));
+  }
+}
+
+Widget _buildContainerOfBattles(BuildContext context) {
+  return StreamBuilder<QuerySnapshot>(
+      stream: Firestore.instance.collection('matches').snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return LinearProgressIndicator();
+
+        return _buildListOfBattles(context, snapshot.data.documents);
+      });
+}
+
+Widget _buildListOfBattles(
+    BuildContext context, List<DocumentSnapshot> snapshot) {
+  return Column(
+    children:
+        snapshot.map((data) => _buildItemsOfBattles(context, data)).toList(),
+  );
+}
+
+Container _buildItemsOfBattles(BuildContext context, DocumentSnapshot data) {
+  final record = Matches.fromSnapshot(data);
+  final homeUser = record.homeUser;
+  final awayUser = record.awayUser;
+  return Container(
+    padding: EdgeInsets.fromLTRB(10, 10, 10, 1),
+    height: 95,
+    width: double.maxFinite,
+    child: Card(
+      elevation: 5,
+      child: InkWell(
+        onTap: () => {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      BattleStats(homeUser: homeUser, awayUser: awayUser)))
+        },
+        child: Padding(
+          padding: EdgeInsets.all(7),
+          child: Stack(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(top: 5),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        userImage(homeUser),
+                        userInfo(homeUser, homeUser),
+                        Spacer(),
+                        userInfo(awayUser, awayUser),
+                        userImage(awayUser),
+                      ],
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+}
