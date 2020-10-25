@@ -10,7 +10,7 @@
 .svn/
 .metadata
 pubspec.lock
-
+/test
 # IntelliJ related
 *.iml
 *.ipr
@@ -46,3 +46,4 @@ app.*.map.json
 /android
 /assets
 /ios
+/web
