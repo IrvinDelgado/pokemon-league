@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokemon_league/components/com_widgets.dart';
+import 'package:pokemon_league/components/api.dart';
 
 class BattleStats extends StatelessWidget {
   final String homeUser;
@@ -29,7 +30,7 @@ class BattleStats extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return RaisedButton(
                           //Actual Link is battleData[homeUser.teamName][index]
-                          onPressed: null,
+                          onPressed: () => usersPokemon(),
                           child: Text('Battle ' + index.toString()),
                         );
                       },

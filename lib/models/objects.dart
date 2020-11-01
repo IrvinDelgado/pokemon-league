@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class User {
-  final String name;
   final String teamName;
-  final String record;
+  final String showDownUserName;
+  final int wins;
+  final int losses;
   final List pokemonTeam;
-  User(this.name, this.teamName, this.record, this.pokemonTeam);
+  User(this.teamName, this.showDownUserName, this.wins, this.losses,
+      this.pokemonTeam);
 }
 
 class Matches {
@@ -43,7 +45,7 @@ class Battle {
       };
 }
 */
-
+/*
 List makeBattlePairs(totalUsers, weekNum) {
   List battlePairs = [];
   //Check if amount of users are even
@@ -74,3 +76,4 @@ List makeBattlePairs(totalUsers, weekNum) {
   }
   return battlePairs;
 }
+*/
