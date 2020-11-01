@@ -1,17 +1,5 @@
 import 'package:flutter/material.dart';
-
-Widget userImage(name) {
-  return Container(
-    child: Align(
-      alignment: Alignment.centerLeft,
-      child: Image.asset(
-        'assets/images/userProfiles/' + name + '.jpg',
-        height: 55,
-        width: 85,
-      ),
-    ),
-  );
-}
+import 'package:pokemon_league/components/com_widgets.dart';
 
 class BattleStats extends StatelessWidget {
   final String homeUser;

@@ -2,60 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:pokemon_league/components/nav.dart';
+import 'package:pokemon_league/components/com_widgets.dart';
+import 'package:pokemon_league/models/objects.dart';
 import 'package:pokemon_league/pages/battle_stats.dart';
-
-class Matches {
-  final String homeUser;
-  final String awayUser;
-  final DocumentReference reference;
-
-  Matches.fromMap(Map<String, dynamic> map, {this.reference})
-      : assert(map['homeUser'] != null),
-        assert(map['awayUser'] != null),
-        homeUser = map['homeUser'],
-        awayUser = map['awayUser'];
-
-  Matches.fromSnapshot(DocumentSnapshot snapshot)
-      : this.fromMap(snapshot.data, reference: snapshot.reference);
-
-  @override
-  String toString() => "Match is <$homeUser:$awayUser>";
-}
-
-Widget userImage(name) {
-  return Container(
-    child: Align(
-      alignment: Alignment.centerLeft,
-      child: Image.asset(
-        'assets/images/userProfiles/' + name + '.jpg',
-        height: 55,
-        width: 85,
-      ),
-    ),
-  );
-}
-
-Widget userInfo(name, record) {
-  return Container(
-    child: RichText(
-        text: TextSpan(
-            text: name,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-              fontSize: 16,
-            ),
-            children: <TextSpan>[
-          TextSpan(
-              text: '\n' + '(' + record + ')',
-              style: TextStyle(
-                fontWeight: FontWeight.normal,
-                color: Colors.grey,
-                fontSize: 12,
-              ))
-        ])),
-  );
-}
 
 class HomePage extends StatefulWidget {
   @override

@@ -1,9 +1,29 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class User {
   final String name;
   final String teamName;
   final String record;
   final List pokemonTeam;
   User(this.name, this.teamName, this.record, this.pokemonTeam);
+}
+
+class Matches {
+  final String homeUser;
+  final String awayUser;
+  final DocumentReference reference;
+
+  Matches.fromMap(Map<String, dynamic> map, {this.reference})
+      : assert(map['homeUser'] != null),
+        assert(map['awayUser'] != null),
+        homeUser = map['homeUser'],
+        awayUser = map['awayUser'];
+
+  Matches.fromSnapshot(DocumentSnapshot snapshot)
+      : this.fromMap(snapshot.data, reference: snapshot.reference);
+
+  @override
+  String toString() => "Match is <$homeUser:$awayUser>";
 }
 
 /*
@@ -23,26 +43,6 @@ class Battle {
       };
 }
 */
-var battleData = {
-  'Belgium': ['Belgium', 'Works', '!'],
-  'India': ['India', 'Works', '!'],
-  'Cambridge': ['Cambridge', 'Works', '!'],
-  'Chi-Town': ['Chi-Town', 'Works', '!'],
-  'LA': ['LA', 'Works', '!'],
-};
-
-final users = <User>[
-  User('Irvin', 'LA', '1-1', []),
-  User('Marvin', 'Chi-Town', '0-3', []),
-  User('Chris', 'Cambridge', '2-1', []),
-  User('Gawher', 'India', '2-1', []),
-  User('Annibal', 'Belgium', '3-0', []),
-  User('Adolfo', 'Vill', '2-1', []),
-  User('Chris.JR', 'Seattle', '3-0', []),
-  User('Ivan', 'Veracruz', '1-1', []),
-  User('Rodney', 'Bellwood', '2-1', []),
-  User('Gyoza', 'Las Vegas', '0-2', []),
-];
 
 List makeBattlePairs(totalUsers, weekNum) {
   List battlePairs = [];
