@@ -22,7 +22,7 @@ class Matches {
         awayUser = map['awayUser'];
 
   Matches.fromSnapshot(DocumentSnapshot snapshot)
-      : this.fromMap(snapshot.data, reference: snapshot.reference);
+      : this.fromMap(snapshot.data(), reference: snapshot.reference);
 
   @override
   String toString() => "Match is <$homeUser:$awayUser>";

@@ -31,12 +31,13 @@ class _HomePageState extends State<HomePage> {
 }
 
 Widget _buildContainerOfBattles(BuildContext context) {
+  final databaseReference = FirebaseFirestore.instance;
   return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('matches').snapshots(),
+      stream: databaseReference.collection('matches').snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return LinearProgressIndicator();
 
-        return _buildListOfBattles(context, snapshot.data.documents);
+        return _buildListOfBattles(context, snapshot.data.docs);
       });
 }
 

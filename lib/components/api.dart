@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'package:pokemon_league/models/objects.dart';
 
-final firestoreInstance = Firestore.instance;
-
+FirebaseFirestore firestoreInstance = FirebaseFirestore.instance;
 // Create User
 void createUser() {
   firestoreInstance.collection("users").add({
@@ -18,7 +17,7 @@ void createUser() {
 void usersPokemon() {
   firestoreInstance
       .collection("users")
-      .document('Irvin')
+      .doc('Irvin')
       .get()
-      .then((value) => print(value.data["pokemonTeam"]));
+      .then((value) => print(value.data()["pokemonTeam"]));
 }
