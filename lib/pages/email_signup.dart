@@ -138,6 +138,25 @@ class _EmailSignUpState extends State<EmailSignUp> {
             email: emailController.text, password: passwordController.text)
         .then((result) {
       createUser(result.user.uid, nameController.text, context);
+    }).catchError((err) {
+      print(err.message);
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Error"),
+              content: Text(err.message),
+              actions: [
+                FlatButton(
+                  child: Text("Ok"),
+                  onPressed: () {
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, "/signup", (r) => false);
+                  },
+                )
+              ],
+            );
+          });
     });
   }
 

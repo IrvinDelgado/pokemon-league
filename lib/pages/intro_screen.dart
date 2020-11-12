@@ -18,7 +18,7 @@ class IntroScreen extends StatelessWidget {
         'Welcome to The Pokemon Draft League App!',
         style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
       ),
-      image: Image.asset('assets/themes/pokeball.jpg'),
+      //image: Image.asset('assets/themes/pokeball.jpg'),
       backgroundColor: Colors.white,
       styleTextUnderTheLoader: new TextStyle(),
       onClick: () => print('it has been clicked!'),
