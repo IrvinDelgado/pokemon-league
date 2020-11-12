@@ -7,6 +7,9 @@ import 'package:pokemon_league/models/objects.dart';
 import 'package:pokemon_league/pages/battle_stats.dart';
 
 class HomePage extends StatefulWidget {
+  final String uid;
+  HomePage({Key key, @required this.uid}) : super(key: key);
+
   @override
   _HomePageState createState() => _HomePageState();
 }
