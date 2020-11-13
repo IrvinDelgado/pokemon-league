@@ -5,19 +5,16 @@ import 'package:pokemon_league/pages/email_login.dart';
 import 'package:pokemon_league/pages/email_signup.dart';
 
 class SignUp extends StatelessWidget {
-  final String title = "Sign Up";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(this.title),
-        ),
         body: Center(
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <
-              Widget>[
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
             Padding(
               padding: EdgeInsets.all(10.0),
-              child: Text("Meet Up",
+              child: Text("Sign Up",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 30,
@@ -49,6 +46,6 @@ class SignUp extends StatelessWidget {
                       );
                     }))
           ]),
-        ));
+    ));
   }
 }
