@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:pokemon_league/pages/home.dart';
+
+import 'package:pokemon_league/screens/home.dart';
 
 class EmailLogin extends StatefulWidget {
   @override

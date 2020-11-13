@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:splashscreen/splashscreen.dart';
 
-import 'package:pokemon_league/pages/home.dart';
-import 'package:pokemon_league/pages/sign_up.dart';
+import 'home.dart';
+import 'signup_login.dart';
 
 class IntroScreen extends StatelessWidget {
   @override

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:pokemon_league/components/nav.dart';
 import 'package:pokemon_league/components/com_widgets.dart';
 import 'package:pokemon_league/models/objects.dart';
-import 'package:pokemon_league/pages/battle_stats.dart';
+import 'battle_stats.dart';
 
 class HomePage extends StatefulWidget {
   final String uid;

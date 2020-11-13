@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 
-import 'package:pokemon_league/pages/email_login.dart';
-import 'package:pokemon_league/pages/email_signup.dart';
+import 'package:pokemon_league/login_options/email_login.dart';
+import 'package:pokemon_league/login_options/email_signup.dart';
 
 class SignUp extends StatelessWidget {
   @override
