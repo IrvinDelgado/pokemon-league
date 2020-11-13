@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'package:pokemon_league/components/api.dart';
+import 'package:pokemon_league/screens/leagues.dart';
 
 class NavDrawer extends StatelessWidget {
   @override
@@ -20,9 +22,12 @@ class NavDrawer extends StatelessWidget {
                     image: AssetImage('assets/images/themes/pokeball.jpg'))),
           ),
           ListTile(
-            leading: Icon(Icons.home_rounded),
-            title: Text('Welcome'),
-            onTap: () => {},
+            leading: Icon(Icons.event_note),
+            title: Text('Leagues'),
+            onTap: () => {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => LeagueList()))
+            },
           ),
           ListTile(
             leading: Icon(Icons.group),

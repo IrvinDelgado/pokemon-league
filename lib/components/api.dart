@@ -37,3 +37,12 @@ void usersPokemon() {
       .get()
       .then((value) => print(value.data()["pokemonTeam"]));
 }
+
+// Create a League
+
+void createLeague(leagueName, passcode) {
+  firestoreInstance.collection("leagues").add({
+    "name": leagueName,
+    "passcode": passcode,
+  }).then((value) => print(value.id));
+}
