@@ -9,44 +9,54 @@ class LeagueList extends StatefulWidget {
 
 class _LeagueListState extends State<LeagueList> {
   final _formKey = GlobalKey<FormState>();
-
+  final userData = getUserData();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("League"),
-      ),
-      body: Center(
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Container(
-                child: Card(
-                  elevation: 15,
-                  child: InkWell(
-                    splashColor: Colors.blue.withAlpha(30),
-                    onTap: () {
-                      _createLeagueDialogue(context, _formKey);
-                    },
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        const ListTile(
-                          leading: Icon(Icons.add_circle_outline_outlined),
-                          title: Text('Create a League'),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+        appBar: AppBar(
+          title: Text("League"),
+        ),
+        body: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              children: <Widget>[
+                _createLeagueTile(context, _formKey),
+                Text("Leagues you own"),
+                _leaguesOwned(),
+                Text("Leagues you participate in"),
+                _leaguesOwned(),
+              ],
             ),
-          ],
+          ),
+        ));
+  }
+}
+
+// CREATION OF LEAGUE
+Widget _createLeagueTile(context, _formKey) {
+  return Padding(
+    padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8.0),
+    child: Container(
+      child: Card(
+        elevation: 15,
+        child: InkWell(
+          splashColor: Colors.blue.withAlpha(30),
+          onTap: () {
+            _createLeagueDialogue(context, _formKey);
+          },
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              const ListTile(
+                leading: Icon(Icons.add_circle_outline_outlined),
+                title: Text('Create a League'),
+              ),
+            ],
+          ),
         ),
       ),
-    );
-  }
+    ),
+  );
 }
 
 Future _createLeagueDialogue(context, _formKey) {
@@ -135,4 +145,42 @@ Future _createLeagueDialogue(context, _formKey) {
       );
     },
   );
+}
+
+Widget _leaguesOwned() {
+  return Padding(
+      padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8.0),
+      child: Container(
+        height: 200,
+        child: Card(
+          elevation: 15,
+          child: ListView.separated(
+            padding: const EdgeInsets.all(8),
+            itemCount: 6,
+            itemBuilder: (BuildContext context, int index) {
+              return Container(
+                height: 50,
+                child: Center(
+                  child: InkWell(
+                    splashColor: Colors.blue.withAlpha(30),
+                    onTap: () {},
+                    child: const ListTile(
+                      title: Text('Create a League'),
+                      trailing: Icon(Icons.arrow_forward),
+                    ),
+                  ),
+                ),
+              );
+            },
+            separatorBuilder: (BuildContext context, int index) =>
+                const Divider(
+              color: Colors.grey,
+              height: 10,
+              thickness: 1,
+              indent: 50,
+              endIndent: 50,
+            ),
+          ),
+        ),
+      ));
 }

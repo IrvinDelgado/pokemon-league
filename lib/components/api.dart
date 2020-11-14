@@ -7,6 +7,8 @@ import 'package:pokemon_league/screens/home.dart';
 FirebaseFirestore firestoreInstance = FirebaseFirestore.instance;
 FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
+// USER AUTH APIS
+
 // Create User
 void createUser(userUID, showDownUserName, context) {
   firestoreInstance.collection("users").doc(userUID).set({
@@ -15,6 +17,7 @@ void createUser(userUID, showDownUserName, context) {
     "showDownUserName": showDownUserName,
     "teamName": "teamName",
     "wins": 0,
+    "leaguesIn": [],
   }).then((res) {
     Navigator.pushReplacement(
         context,
@@ -29,7 +32,6 @@ Future<void> signOut(context) async {
       Navigator.pushNamedAndRemoveUntil(context, "/signup", (r) => false));
 }
 
-// GET list of pokemon of user
 void usersPokemon() {
   firestoreInstance
       .collection("users")
@@ -38,11 +40,31 @@ void usersPokemon() {
       .then((value) => print(value.data()["pokemonTeam"]));
 }
 
-// Create a League
+// League APIS
 
 void createLeague(leagueName, passcode) {
   firestoreInstance.collection("leagues").add({
     "name": leagueName,
     "passcode": passcode,
-  }).then((value) => print(value.id));
+    "creator": firebaseAuth.currentUser.uid,
+  }).then((value) => addLeagueToUser(value.id));
+}
+
+void addLeagueToUser(leagueUID) {
+  firestoreInstance
+      .collection("users")
+      .doc(firebaseAuth.currentUser.uid)
+      .update({
+    "leaguesIn": FieldValue.arrayUnion([leagueUID])
+  });
+}
+
+void getUserData() {
+  firestoreInstance
+      .collection("users")
+      .doc(firebaseAuth.currentUser.uid)
+      .get()
+      .then((value) {
+    print(value.data());
+  });
 }
