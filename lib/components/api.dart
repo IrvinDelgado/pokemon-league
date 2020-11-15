@@ -40,6 +40,16 @@ void usersPokemon() {
       .then((value) => print(value.data()["pokemonTeam"]));
 }
 
+void getUserData() {
+  firestoreInstance
+      .collection("users")
+      .doc(firebaseAuth.currentUser.uid)
+      .snapshots()
+      .listen((value) {
+    print(value.data());
+  });
+}
+
 // League APIS
 
 void createLeague(leagueName, passcode) {
@@ -47,24 +57,62 @@ void createLeague(leagueName, passcode) {
     "name": leagueName,
     "passcode": passcode,
     "creator": firebaseAuth.currentUser.uid,
-  }).then((value) => addLeagueToUser(value.id));
+  }).then((value) => addLeagueToUser(value.id, leagueName, "leaguesCreated"));
 }
 
-void addLeagueToUser(leagueUID) {
+void addLeagueToUser(leagueUID, teamName, leagueType) {
   firestoreInstance
       .collection("users")
       .doc(firebaseAuth.currentUser.uid)
       .update({
-    "leaguesIn": FieldValue.arrayUnion([leagueUID])
+    leagueType: FieldValue.arrayUnion([leagueUID + ',' + teamName]),
   });
 }
 
-void getUserData() {
-  firestoreInstance
-      .collection("users")
-      .doc(firebaseAuth.currentUser.uid)
-      .get()
-      .then((value) {
-    print(value.data());
-  });
+Widget showLeaguesIn(BuildContext context, String leagueType) {
+  return StreamBuilder<DocumentSnapshot>(
+      stream: firestoreInstance
+          .collection("users")
+          .doc(firebaseAuth.currentUser.uid)
+          .snapshots(),
+      builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        if (snapshot.connectionState == ConnectionState.active) {
+          // get course document
+          var courseDocument = snapshot.data.data();
+          // get sections from the document
+          var sections = courseDocument[leagueType];
+          // build list
+          return leagueTiles(sections);
+        } else {
+          return Container();
+        }
+      });
+}
+
+ListView leagueTiles(sections) {
+  return ListView.separated(
+    itemCount: sections != null ? sections.length : 0,
+    itemBuilder: (_, int index) {
+      List leagueData = sections[index].split(",");
+      print(leagueData);
+      return InkWell(
+        splashColor: Colors.blue.withAlpha(30),
+        onTap: () {},
+        child: ListTile(
+          title: Text(leagueData[1]),
+          subtitle: Text(
+            "uid: " + leagueData[0],
+          ),
+          trailing: Icon(Icons.arrow_forward),
+        ),
+      );
+    },
+    separatorBuilder: (BuildContext context, int index) => const Divider(
+      color: Colors.grey,
+      height: 10,
+      thickness: 1,
+      indent: 50,
+      endIndent: 50,
+    ),
+  );
 }

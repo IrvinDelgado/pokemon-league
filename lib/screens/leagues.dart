@@ -22,9 +22,9 @@ class _LeagueListState extends State<LeagueList> {
               children: <Widget>[
                 _createLeagueTile(context, _formKey),
                 Text("Leagues you own"),
-                _leaguesOwned(),
+                _leagueCard(context, 'leaguesCreated'),
                 Text("Leagues you participate in"),
-                _leaguesOwned(),
+                _leagueCard(context, 'leaguesIn'),
               ],
             ),
           ),
@@ -147,14 +147,19 @@ Future _createLeagueDialogue(context, _formKey) {
   );
 }
 
-Widget _leaguesOwned() {
+Widget _leagueCard(context, leagueType) {
   return Padding(
       padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8.0),
       child: Container(
         height: 200,
         child: Card(
           elevation: 15,
-          child: ListView.separated(
+          child: showLeaguesIn(context, leagueType),
+        ),
+      ));
+}
+/*
+child: ListView.separated(
             padding: const EdgeInsets.all(8),
             itemCount: 6,
             itemBuilder: (BuildContext context, int index) {
@@ -181,6 +186,8 @@ Widget _leaguesOwned() {
               endIndent: 50,
             ),
           ),
-        ),
-      ));
-}
+
+
+
+
+*/
