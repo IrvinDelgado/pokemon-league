@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import 'package:pokemon_league/components/api.dart';
+import 'package:pokemon_league/components/com_widgets.dart';
 
 class SearchLeague extends StatefulWidget {
   @override
@@ -78,17 +79,17 @@ class _SearchLeagueState extends State<SearchLeague> {
 
   ListView testList(snapshot) {
     //var leagueData = snapshot.data.documents[0].data();
-    //var leagueID = snapshot.data.documents[0].id;
-    return ListView.builder(
+    //var leagueID = snapshot.data.documents[index].id;
+    //var leagueName = snapshot.data.documents[index].data()["name"];
+    return ListView.separated(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
       itemCount: snapshot.data.documents.length,
       itemBuilder: (_, int index) {
-        return ListTile(
-          title: Text(snapshot.data.documents[index].data()["name"]),
-          subtitle: Text(snapshot.data.documents[index].id),
-        );
+        return finalLeagueTiles(snapshot.data.documents[index].data()["name"],
+            snapshot.data.documents[index].id);
       },
+      separatorBuilder: (context, index) => finalTileDivider(),
     );
   }
 }

@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:pokemon_league/screens/home.dart';
+import 'package:pokemon_league/models/objects.dart';
+import 'package:pokemon_league/components/com_widgets.dart';
 
 FirebaseFirestore firestoreInstance = FirebaseFirestore.instance;
 FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -50,15 +52,15 @@ void createLeague(leagueName, passcode) {
     "name": leagueName,
     "passcode": passcode,
     "creator": firebaseAuth.currentUser.uid,
-  }).then((value) => addLeagueToUser(value.id, leagueName, "leaguesCreated"));
+  }).then((value) => addLeagueToUser(value.id, "leaguesCreated"));
 }
 
-void addLeagueToUser(leagueUID, teamName, leagueType) {
+void addLeagueToUser(leagueUID, leagueType) {
   firestoreInstance
       .collection("users")
       .doc(firebaseAuth.currentUser.uid)
       .update({
-    leagueType: FieldValue.arrayUnion([leagueUID + ',' + teamName]),
+    leagueType: FieldValue.arrayUnion([leagueUID]),
   });
 }
 
@@ -82,31 +84,30 @@ Widget showLeaguesIn(BuildContext context, String leagueType) {
       });
 }
 
-ListView leagueTiles(sections) {
-  return ListView.separated(
-    itemCount: sections != null ? sections.length : 0,
-    itemBuilder: (_, int index) {
-      List leagueData = sections[index].split(",");
-      return InkWell(
-        splashColor: Colors.blue.withAlpha(30),
-        onTap: () {},
-        child: ListTile(
-          title: Text(leagueData[1]),
-          subtitle: Text(
-            "uid: " + leagueData[0],
-          ),
-          trailing: Icon(Icons.arrow_forward),
-        ),
-      );
+FutureBuilder leagueTilesUpdated(docID) {
+  return FutureBuilder(
+    future: firestoreInstance.collection('leagues').doc(docID).get(),
+    builder: (_, snapshot) {
+      if (snapshot.connectionState == ConnectionState.done) {
+        Leagues league = Leagues.fromMap(snapshot.data.data());
+        return finalLeagueTiles(league.name, docID);
+      } else {
+        return Container();
+      }
     },
-    separatorBuilder: (BuildContext context, int index) => const Divider(
-      color: Colors.grey,
-      height: 10,
-      thickness: 1,
-      indent: 50,
-      endIndent: 50,
-    ),
   );
+}
+
+ListView leagueTiles(listOfLeagueIDS) {
+  return ListView.separated(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      itemCount: listOfLeagueIDS != null ? listOfLeagueIDS.length : 0,
+      itemBuilder: (_, int index) {
+        return leagueTilesUpdated(listOfLeagueIDS[index]);
+      },
+      separatorBuilder: (BuildContext context, int index) =>
+          finalTileDivider());
 }
 
 Future<QuerySnapshot> requestLeagueNames(leagueNameRequested) async {

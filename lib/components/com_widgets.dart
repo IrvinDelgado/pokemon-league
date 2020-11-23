@@ -34,3 +34,27 @@ Widget userInfo(name, record) {
         ])),
   );
 }
+
+Widget finalLeagueTiles(leagueName, leagueUID) {
+  return InkWell(
+    splashColor: Colors.blue.withAlpha(30),
+    onTap: () {},
+    child: ListTile(
+      title: Text(leagueName),
+      subtitle: Text(
+        "uid: " + leagueUID,
+      ),
+      trailing: Icon(Icons.arrow_forward),
+    ),
+  );
+}
+
+Divider finalTileDivider() {
+  return Divider(
+    color: Colors.grey,
+    height: 10,
+    thickness: 1,
+    indent: 50,
+    endIndent: 50,
+  );
+}

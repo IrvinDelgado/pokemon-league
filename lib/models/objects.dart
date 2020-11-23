@@ -51,3 +51,24 @@ class Matches {
   @override
   String toString() => "Match is <$homeUser:$awayUser>";
 }
+
+class Leagues {
+  final String creator;
+  final String name;
+  final String passcode;
+  final DocumentReference reference;
+
+  Leagues.fromMap(Map<String, dynamic> map, {this.reference})
+      : assert(map['creator'] != null),
+        assert(map['name'] != null),
+        assert(map['passcode'] != null),
+        creator = map['creator'],
+        name = map['name'],
+        passcode = map['passcode'];
+
+  Leagues.fromSnapshot(DocumentSnapshot snapshot)
+      : this.fromMap(snapshot.data(), reference: snapshot.reference);
+
+  @override
+  String toString() => "League created by: named <$creator:$name>";
+}
