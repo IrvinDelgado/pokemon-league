@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:pokemon_league/components/api.dart';
+import 'package:pokemon_league/screens/search_league.dart';
 
 class LeagueList extends StatefulWidget {
   @override
@@ -9,26 +10,35 @@ class LeagueList extends StatefulWidget {
 
 class _LeagueListState extends State<LeagueList> {
   final _formKey = GlobalKey<FormState>();
-  final userData = getUserData();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("League"),
-        ),
-        body: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              children: <Widget>[
-                _createLeagueTile(context, _formKey),
-                Text("Leagues you own"),
-                _leagueCard(context, 'leaguesCreated'),
-                Text("Leagues you participate in"),
-                _leagueCard(context, 'leaguesIn'),
-              ],
-            ),
+      appBar: AppBar(
+        title: Text("League"),
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SearchLeague()));
+            },
+            icon: Icon(Icons.search),
           ),
-        ));
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              _createLeagueTile(context, _formKey),
+              Text("Leagues you own"),
+              _leagueCard(context, 'leaguesCreated'),
+              Text("Leagues you participate in"),
+              _leagueCard(context, 'leaguesIn'),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 
@@ -158,36 +168,3 @@ Widget _leagueCard(context, leagueType) {
         ),
       ));
 }
-/*
-child: ListView.separated(
-            padding: const EdgeInsets.all(8),
-            itemCount: 6,
-            itemBuilder: (BuildContext context, int index) {
-              return Container(
-                height: 50,
-                child: Center(
-                  child: InkWell(
-                    splashColor: Colors.blue.withAlpha(30),
-                    onTap: () {},
-                    child: const ListTile(
-                      title: Text('Create a League'),
-                      trailing: Icon(Icons.arrow_forward),
-                    ),
-                  ),
-                ),
-              );
-            },
-            separatorBuilder: (BuildContext context, int index) =>
-                const Divider(
-              color: Colors.grey,
-              height: 10,
-              thickness: 1,
-              indent: 50,
-              endIndent: 50,
-            ),
-          ),
-
-
-
-
-*/

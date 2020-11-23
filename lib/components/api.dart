@@ -33,21 +33,14 @@ Future<void> signOut(context) async {
 }
 
 void usersPokemon() {
-  firestoreInstance
-      .collection("users")
-      .doc('Irvin')
-      .get()
-      .then((value) => print(value.data()["pokemonTeam"]));
+  firestoreInstance.collection("users").doc('Irvin').get();
 }
 
 void getUserData() {
   firestoreInstance
       .collection("users")
       .doc(firebaseAuth.currentUser.uid)
-      .snapshots()
-      .listen((value) {
-    print(value.data());
-  });
+      .snapshots();
 }
 
 // League APIS
@@ -94,7 +87,6 @@ ListView leagueTiles(sections) {
     itemCount: sections != null ? sections.length : 0,
     itemBuilder: (_, int index) {
       List leagueData = sections[index].split(",");
-      print(leagueData);
       return InkWell(
         splashColor: Colors.blue.withAlpha(30),
         onTap: () {},
@@ -115,4 +107,12 @@ ListView leagueTiles(sections) {
       endIndent: 50,
     ),
   );
+}
+
+Future<QuerySnapshot> requestLeagueNames(leagueNameRequested) async {
+  var result = await firestoreInstance
+      .collection("leagues")
+      .where("name", isEqualTo: leagueNameRequested)
+      .get();
+  return result;
 }
