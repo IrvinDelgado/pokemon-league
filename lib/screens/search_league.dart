@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 
 import 'package:pokemon_league/components/api.dart';
 import 'package:pokemon_league/components/com_widgets.dart';
+import 'package:pokemon_league/models/objects.dart';
 
 class SearchLeague extends StatefulWidget {
   @override
@@ -44,6 +45,25 @@ class _SearchLeagueState extends State<SearchLeague> {
                   ),
                 ),
               ),
+              Row(
+                children: [
+                  Spacer(),
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: RaisedButton(
+                      color: Colors.lightBlue,
+                      onPressed: () {
+                        if (_formKey.currentState.validate()) {
+                          setState(() {
+                            isLoading = true;
+                          });
+                        }
+                      },
+                      child: Text("Submit"),
+                    ),
+                  ),
+                ],
+              ),
               Padding(
                 padding: EdgeInsets.all(8.0),
                 child: isLoading
@@ -51,24 +71,18 @@ class _SearchLeagueState extends State<SearchLeague> {
                         future: requestLeagueNames(nameController.text),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
-                              ConnectionState.done) {
-                            return testList(snapshot);
+                                  ConnectionState.done &&
+                              snapshot.data.documents.length != 0) {
+                            return leaguesFound(snapshot);
+                          } else if (snapshot.connectionState ==
+                                  ConnectionState.done &&
+                              snapshot.data.documents.length == 0) {
+                            return Text("Nothing Found...");
                           } else {
                             return Container();
                           }
                         })
-                    : RaisedButton(
-                        color: Colors.lightBlue,
-                        onPressed: () {
-                          if (_formKey.currentState.validate()) {
-                            setState(() {
-                              isLoading = true;
-                            });
-                            //Send Query? Show List of Leagues: Error no Leagues
-                          }
-                        },
-                        child: Text('Submit'),
-                      ),
+                    : Container(),
               ),
             ],
           ),
@@ -77,17 +91,18 @@ class _SearchLeagueState extends State<SearchLeague> {
     );
   }
 
-  ListView testList(snapshot) {
-    //var leagueData = snapshot.data.documents[0].data();
-    //var leagueID = snapshot.data.documents[index].id;
-    //var leagueName = snapshot.data.documents[index].data()["name"];
+  ListView leaguesFound(snapshot) {
     return ListView.separated(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
       itemCount: snapshot.data.documents.length,
       itemBuilder: (_, int index) {
-        return finalLeagueTiles(snapshot.data.documents[index].data()["name"],
-            snapshot.data.documents[index].id);
+        Leagues league = Leagues.fromSnapshot(snapshot.data.documents[index]);
+        return finalLeagueTiles(
+          league.name,
+          league.reference.id,
+          context,
+        );
       },
       separatorBuilder: (context, index) => finalTileDivider(),
     );

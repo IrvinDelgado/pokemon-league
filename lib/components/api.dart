@@ -6,11 +6,12 @@ import 'package:pokemon_league/screens/home.dart';
 import 'package:pokemon_league/models/objects.dart';
 import 'package:pokemon_league/components/com_widgets.dart';
 
+// Instances
 FirebaseFirestore firestoreInstance = FirebaseFirestore.instance;
 FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
 // USER AUTH APIS
-
+//////////////////////////////////////////////////////////
 // Create User
 void createUser(userUID, showDownUserName, context) {
   firestoreInstance.collection("users").doc(userUID).set({
@@ -37,15 +38,18 @@ Future<void> signOut(context) async {
 void usersPokemon() {
   firestoreInstance.collection("users").doc('Irvin').get();
 }
+//////////////////////////////////////////////////////////
+// END OF USER APIS
 
-void getUserData() {
-  firestoreInstance
-      .collection("users")
-      .doc(firebaseAuth.currentUser.uid)
-      .snapshots();
+// LEAGUE APIS
+//////////////////////////////////////////////////////////
+Future<QuerySnapshot> requestLeagueNames(leagueNameRequested) async {
+  var result = await firestoreInstance
+      .collection("leagues")
+      .where("name", isEqualTo: leagueNameRequested)
+      .get();
+  return result;
 }
-
-// League APIS
 
 void createLeague(leagueName, passcode) {
   firestoreInstance.collection("leagues").add({
@@ -53,6 +57,15 @@ void createLeague(leagueName, passcode) {
     "passcode": passcode,
     "creator": firebaseAuth.currentUser.uid,
   }).then((value) => addLeagueToUser(value.id, "leaguesCreated"));
+}
+
+Future<bool> checkPasswordGiven(passcode, docID) async {
+  var result = await firestoreInstance.collection("leagues").doc(docID).get();
+  if (result.data()["passcode"] == passcode) {
+    addLeagueToUser(docID, "leaguesIn");
+    return true;
+  }
+  return false;
 }
 
 void addLeagueToUser(leagueUID, leagueType) {
@@ -64,6 +77,7 @@ void addLeagueToUser(leagueUID, leagueType) {
   });
 }
 
+// <DocumentSnapshot> is part of cloud_firestore
 Widget showLeaguesIn(BuildContext context, String leagueType) {
   return StreamBuilder<DocumentSnapshot>(
       stream: firestoreInstance
@@ -72,48 +86,43 @@ Widget showLeaguesIn(BuildContext context, String leagueType) {
           .snapshots(),
       builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
-          // get course document
-          var courseDocument = snapshot.data.data();
-          // get sections from the document
-          var sections = courseDocument[leagueType];
-          // build list
-          return leagueTiles(sections);
+          LeagueUser currUser = LeagueUser.fromSnapshot(snapshot.data);
+          List listOfLeagueIDS = (leagueType == 'leaguesIn')
+              ? currUser.leaguesIn
+              : currUser.leaguesCreated;
+          return ListView.separated(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: listOfLeagueIDS != null ? listOfLeagueIDS.length : 0,
+              itemBuilder: (_, int index) {
+                //For each league in list create a tile
+                return buildFromLeagueID(listOfLeagueIDS[index], context);
+              },
+              separatorBuilder: (BuildContext context, int index) =>
+                  finalTileDivider());
         } else {
           return Container();
         }
       });
 }
 
-FutureBuilder leagueTilesUpdated(docID) {
+// Makes a call to Firestore for league data
+FutureBuilder buildFromLeagueID(docID, context) {
   return FutureBuilder(
     future: firestoreInstance.collection('leagues').doc(docID).get(),
     builder: (_, snapshot) {
       if (snapshot.connectionState == ConnectionState.done) {
         Leagues league = Leagues.fromMap(snapshot.data.data());
-        return finalLeagueTiles(league.name, docID);
+        return leagueTilesforLeaguesIn(
+          league.name,
+          docID,
+          context,
+        );
       } else {
         return Container();
       }
     },
   );
 }
-
-ListView leagueTiles(listOfLeagueIDS) {
-  return ListView.separated(
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      itemCount: listOfLeagueIDS != null ? listOfLeagueIDS.length : 0,
-      itemBuilder: (_, int index) {
-        return leagueTilesUpdated(listOfLeagueIDS[index]);
-      },
-      separatorBuilder: (BuildContext context, int index) =>
-          finalTileDivider());
-}
-
-Future<QuerySnapshot> requestLeagueNames(leagueNameRequested) async {
-  var result = await firestoreInstance
-      .collection("leagues")
-      .where("name", isEqualTo: leagueNameRequested)
-      .get();
-  return result;
-}
+//////////////////////////////////////////////////////////
+// END OF LEAGUE APIS
