@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class LeagueUser {
   final String teamName;
   final String showDownUserName;
+  final String leagueActive;
   final int wins;
   final int losses;
   final List pokemonTeam;
@@ -14,6 +15,7 @@ class LeagueUser {
   LeagueUser.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['teamName'] != null),
         assert(map['showDownUserName'] != null),
+        assert(map['leagueActive'] != null),
         assert(map['wins'] != null),
         assert(map['losses'] != null),
         assert(map['pokemonTeam'] != null),
@@ -21,6 +23,7 @@ class LeagueUser {
         assert(map['leaguesCreated'] != null),
         teamName = map['teamName'],
         showDownUserName = map['showDownUserName'],
+        leagueActive = map['showDownUserName'],
         wins = map['wins'],
         losses = map['losses'],
         pokemonTeam = map['pokemonTeam'],
