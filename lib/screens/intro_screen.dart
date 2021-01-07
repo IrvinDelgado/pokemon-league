@@ -13,7 +13,7 @@ class IntroScreen extends StatelessWidget {
       routeName: "/",
       navigateAfterSeconds:
           result != null ? HomePage(uid: result.uid) : SignUp(),
-      seconds: 5,
+      seconds: 2,
       title: new Text(
         'Pokemon Draft League App!',
         style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
