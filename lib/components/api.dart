@@ -18,9 +18,11 @@ void createUser(userUID, showDownUserName, context) {
     "losses": 0,
     "pokemonTeam": [],
     "showDownUserName": showDownUserName,
-    "teamName": "teamName",
+    "teamName": showDownUserName,
     "wins": 0,
     "leaguesIn": [],
+    "leaguesCreated": [],
+    "leagueActive": "",
   }).then((res) {
     Navigator.pushReplacement(
         context,
@@ -33,6 +35,12 @@ void createUser(userUID, showDownUserName, context) {
 Future<void> signOut(context) async {
   await firebaseAuth.signOut().then((value) =>
       Navigator.pushNamedAndRemoveUntil(context, "/signup", (r) => false));
+}
+
+Future<LeagueUser> getUserData(userUID) async {
+  var user = await firestoreInstance.collection("users").doc(userUID).get();
+  LeagueUser leagueUser = LeagueUser.fromSnapshot(user);
+  return leagueUser;
 }
 
 void usersPokemon() {
