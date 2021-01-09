@@ -92,7 +92,7 @@ Future _createLeagueDialogue(context, _formKey) {
                     child: TextFormField(
                       controller: nameController,
                       decoration: InputDecoration(
-                        labelText: "Enter User Name",
+                        labelText: "Enter League Name",
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
@@ -110,14 +110,14 @@ Future _createLeagueDialogue(context, _formKey) {
                     child: TextFormField(
                       controller: passCodeController,
                       decoration: InputDecoration(
-                        labelText: "Enter PassCode",
+                        labelText: "Enter League PassCode",
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                       ),
                       validator: (value) {
                         if (value.isEmpty) {
-                          return 'Enter PassCode';
+                          return 'Enter League PassCode';
                         } else if (value.length > 10) {
                           return 'Needs to less than 10 Characters';
                         }
@@ -159,12 +159,13 @@ Future _createLeagueDialogue(context, _formKey) {
 
 Widget _leagueCard(context, leagueType) {
   return Padding(
-      padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8.0),
-      child: Container(
-        height: 200,
-        child: Card(
-          elevation: 15,
-          child: showLeaguesIn(context, leagueType),
-        ),
-      ));
+    padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8.0),
+    child: Container(
+      height: 200,
+      child: Card(
+        elevation: 15,
+        child: showLeaguesIn(context, leagueType),
+      ),
+    ),
+  );
 }
