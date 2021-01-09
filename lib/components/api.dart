@@ -64,6 +64,7 @@ void createLeague(leagueName, passcode) {
     "name": leagueName,
     "passcode": passcode,
     "creator": firebaseAuth.currentUser.uid,
+    "creatingMode": 1,
   }).then((value) => addLeagueToUser(value.id, "leaguesCreated"));
 }
 

@@ -1,19 +1,41 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pokemon_league/screens/leagues.dart';
 import 'package:splashscreen/splashscreen.dart';
 
-import 'home.dart';
+import 'package:pokemon_league/components/api.dart';
+import 'package:pokemon_league/models/objects.dart';
+import 'package:pokemon_league/screens/home.dart';
+
+//import 'home.dart';
 import 'signup_login.dart';
 
-class IntroScreen extends StatelessWidget {
+class IntroScreen extends StatefulWidget {
+  @override
+  _IntroScreenState createState() => _IntroScreenState();
+}
+
+class _IntroScreenState extends State<IntroScreen> {
+  User result = FirebaseAuth.instance.currentUser;
+  Future<Widget> loadFromFuture() async {
+    if (result != null) {
+      LeagueUser user = await getUserData(result.uid);
+      print(user.leagueActive);
+      if (user.leagueActive == '') {
+        return Future.value(LeagueList());
+      }
+      return Future.value(HomePage(uid: result.uid, user: user));
+    } else {
+      return Future.value(SignUp());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    User result = FirebaseAuth.instance.currentUser;
     return new SplashScreen(
       routeName: "/",
-      navigateAfterSeconds:
-          result != null ? HomePage(uid: result.uid) : SignUp(),
-      seconds: 2,
+      navigateAfterFuture: loadFromFuture(),
+      seconds: 5,
       title: new Text(
         'Pokemon Draft League App!',
         style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),

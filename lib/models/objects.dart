@@ -23,7 +23,7 @@ class LeagueUser {
         assert(map['leaguesCreated'] != null),
         teamName = map['teamName'],
         showDownUserName = map['showDownUserName'],
-        leagueActive = map['showDownUserName'],
+        leagueActive = map['leagueActive'],
         wins = map['wins'],
         losses = map['losses'],
         pokemonTeam = map['pokemonTeam'],
