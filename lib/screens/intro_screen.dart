@@ -20,11 +20,10 @@ class _IntroScreenState extends State<IntroScreen> {
   Future<Widget> loadFromFuture() async {
     if (result != null) {
       LeagueUser user = await getUserData(result.uid);
-      print(user.leagueActive);
       if (user.leagueActive == '') {
         return Future.value(LeagueList());
       }
-      return Future.value(HomePage(uid: result.uid, user: user));
+      return Future.value(HomePage(uid: result.uid));
     } else {
       return Future.value(SignUp());
     }

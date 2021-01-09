@@ -46,18 +46,10 @@ Future<LeagueUser> getUserData(userUID) async {
 void usersPokemon() {
   firestoreInstance.collection("users").doc('Irvin').get();
 }
-//////////////////////////////////////////////////////////
-// END OF USER APIS
 
+//////////////////////////////////////////////////////////
 // LEAGUE APIS
 //////////////////////////////////////////////////////////
-Future<QuerySnapshot> requestLeagueNames(leagueNameRequested) async {
-  var result = await firestoreInstance
-      .collection("leagues")
-      .where("name", isEqualTo: leagueNameRequested)
-      .get();
-  return result;
-}
 
 void createLeague(leagueName, passcode) {
   firestoreInstance.collection("leagues").add({
@@ -66,6 +58,29 @@ void createLeague(leagueName, passcode) {
     "creator": firebaseAuth.currentUser.uid,
     "creatingMode": 1,
   }).then((value) => addLeagueToUser(value.id, "leaguesCreated"));
+}
+
+Future<QuerySnapshot> requestLeagueNames(leagueNameRequested) async {
+  var result = await firestoreInstance
+      .collection("leagues")
+      .where("name", isEqualTo: leagueNameRequested)
+      .get();
+  return result;
+}
+
+Future<DocumentSnapshot> getLeagueData(leagueID) async {
+  var leagueData =
+      await firestoreInstance.collection("leagues").doc(leagueID).get();
+  return leagueData;
+}
+
+void makeLeagueActive(String newActiveLeague) {
+  firestoreInstance
+      .collection("users")
+      .doc(firebaseAuth.currentUser.uid)
+      .update({
+    "leagueActive": newActiveLeague,
+  });
 }
 
 Future<bool> checkPasswordGiven(passcode, docID) async {
@@ -86,7 +101,6 @@ void addLeagueToUser(leagueUID, leagueType) {
   });
 }
 
-// <DocumentSnapshot> is part of cloud_firestore
 Widget showLeaguesIn(BuildContext context, String leagueType) {
   return StreamBuilder<DocumentSnapshot>(
       stream: firestoreInstance
@@ -116,6 +130,7 @@ Widget showLeaguesIn(BuildContext context, String leagueType) {
 }
 
 // Makes a call to Firestore for league data
+// docID => league id
 FutureBuilder buildFromLeagueID(docID, context) {
   return FutureBuilder(
     future: firestoreInstance.collection('leagues').doc(docID).get(),
@@ -134,4 +149,4 @@ FutureBuilder buildFromLeagueID(docID, context) {
   );
 }
 //////////////////////////////////////////////////////////
-// END OF LEAGUE APIS
+//

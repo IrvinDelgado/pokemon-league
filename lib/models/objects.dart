@@ -59,14 +59,17 @@ class Leagues {
   final String creator;
   final String name;
   final String passcode;
+  final int creatingMode;
   final DocumentReference reference;
 
   Leagues.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['creator'] != null),
         assert(map['name'] != null),
         assert(map['passcode'] != null),
+        assert(map['creatingMode'] != null),
         creator = map['creator'],
         name = map['name'],
+        creatingMode = map['creatingMode'],
         passcode = map['passcode'];
 
   Leagues.fromSnapshot(DocumentSnapshot snapshot)

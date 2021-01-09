@@ -115,10 +115,13 @@ Widget finalLeagueTiles(leagueName, leagueUID, context) {
 Widget leagueTilesforLeaguesIn(leagueName, leagueUID, context) {
   return InkWell(
     splashColor: Colors.blue.withAlpha(30),
-    onTap: () => Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => HomePage(uid: leagueUID)),
-    ),
+    onTap: () {
+      makeLeagueActive(leagueUID);
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage(uid: leagueUID)),
+      );
+    },
     child: ListTile(
       title: Text(leagueName),
       subtitle: Text(
