@@ -42,7 +42,7 @@ class _LeagueListState extends State<LeagueList> {
   }
 }
 
-// CREATION OF LEAGUE
+// Tile that is in charge of creating NEW League
 Widget _createLeagueTile(context, _formKey) {
   return Padding(
     padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8.0),
@@ -69,6 +69,7 @@ Widget _createLeagueTile(context, _formKey) {
   );
 }
 
+// Dialogue To Create a NEW League
 Future _createLeagueDialogue(context, _formKey) {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController passCodeController = TextEditingController();
@@ -157,6 +158,9 @@ Future _createLeagueDialogue(context, _formKey) {
   );
 }
 
+// The Whole Card that Houses League TILES
+// parameters: context
+//             leagueType:string => tells the api what leagues are needed
 Widget _leagueCard(context, leagueType) {
   return Padding(
     padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8.0),
