@@ -23,7 +23,7 @@ class _IntroScreenState extends State<IntroScreen> {
       if (user.leagueActive == '') {
         return Future.value(LeagueList());
       }
-      return Future.value(HomePage(uid: result.uid));
+      return Future.value(HomePage(uid: user.leagueActive));
     } else {
       return Future.value(SignUp());
     }
