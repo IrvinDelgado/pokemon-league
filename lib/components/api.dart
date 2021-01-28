@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
 
 import 'package:pokemon_league/screens/home.dart';
@@ -150,3 +151,5 @@ FutureBuilder buildFromLeagueID(docID, context) {
 }
 //////////////////////////////////////////////////////////
 //
+
+//Future<Widget> _getUserPhoto() {}

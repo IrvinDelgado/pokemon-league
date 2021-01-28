@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:pokemon_league/components/api.dart';
 import 'package:pokemon_league/screens/leagues.dart';
+import 'package:pokemon_league/screens/user_settings.dart';
 
 class NavDrawer extends StatelessWidget {
   @override
@@ -30,12 +31,15 @@ class NavDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.group),
-            title: Text('Team Viewer'),
-            onTap: () => {Navigator.of(context).pop()},
+            leading: Icon(Icons.settings),
+            title: Text('Settings'),
+            onTap: () => {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => UserSettings()))
+            },
           ),
           ListTile(
-            leading: Icon(Icons.settings),
+            leading: Icon(Icons.exit_to_app),
             title: Text('LogOut'),
             onTap: () async {
               await signOut(context);
