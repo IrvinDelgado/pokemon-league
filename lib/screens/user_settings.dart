@@ -53,7 +53,9 @@ Widget _userSettingsInfo(LeagueUser user, BuildContext context) {
               content: Text('Copied UID'),
               action: SnackBarAction(
                 label: 'Close',
-                onPressed: () {},
+                onPressed: () {
+                  Scaffold.of(context).hideCurrentSnackBar();
+                },
               ),
             ));
           },
