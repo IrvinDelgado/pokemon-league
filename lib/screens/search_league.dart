@@ -72,11 +72,11 @@ class _SearchLeagueState extends State<SearchLeague> {
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                                   ConnectionState.done &&
-                              snapshot.data.documents.length != 0) {
+                              snapshot.data.docs.length != 0) {
                             return leaguesFound(snapshot);
                           } else if (snapshot.connectionState ==
                                   ConnectionState.done &&
-                              snapshot.data.documents.length == 0) {
+                              snapshot.data.docs.length == 0) {
                             return Text("Nothing Found...");
                           } else {
                             return Container();
@@ -95,9 +95,9 @@ class _SearchLeagueState extends State<SearchLeague> {
     return ListView.separated(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      itemCount: snapshot.data.documents.length,
+      itemCount: snapshot.data.docs.length,
       itemBuilder: (_, int index) {
-        Leagues league = Leagues.fromSnapshot(snapshot.data.documents[index]);
+        Leagues league = Leagues.fromSnapshot(snapshot.data.docs[index]);
         return finalLeagueTiles(
           league.name,
           league.reference.id,
