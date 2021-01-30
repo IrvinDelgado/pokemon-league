@@ -151,5 +151,3 @@ FutureBuilder buildFromLeagueID(docID, context) {
 }
 //////////////////////////////////////////////////////////
 //
-
-//Future<Widget> _getUserPhoto() {}
