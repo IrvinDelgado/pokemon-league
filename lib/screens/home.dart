@@ -24,82 +24,85 @@ class _HomePageState extends State<HomePage> {
       body: _homeBody(this.widget.uid),
     );
   }
-}
 
-Widget _homeBody(leagueUID) {
-  return new FutureBuilder(
-    future: getLeagueData(leagueUID),
-    builder: (context, snapshot) {
-      if (snapshot.hasData) {
-        Leagues league = Leagues.fromSnapshot(snapshot.data);
-        if (league.creatingMode == 1) return _creatingMode(league);
-        return Container(child: Text('In Play'));
-      } else {
-        return CircularProgressIndicator();
-      }
-    },
-  );
-}
+  Widget _homeBody(leagueUID) {
+    return new FutureBuilder(
+      future: getLeagueData(leagueUID),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          Leagues league = Leagues.fromSnapshot(snapshot.data);
+          if (league.creatingMode == 1) return _creatingMode(league);
+          return Container(child: Text('In Play'));
+        } else {
+          return CircularProgressIndicator();
+        }
+      },
+    );
+  }
 
-/// In Creation Mode
-/// Invite Button on the Top
-/// List of people in the League
-///   Pending => Grey
-///   Accepted => Green
+  /// In Creation Mode
+  /// Invite Button on the Top
+  /// List of people in the League
+  ///   Pending => Grey
+  ///   Accepted => Green
 
-Widget _creatingMode(Leagues league) {
-  return SingleChildScrollView(
-    child: Center(
-      child: Column(
-        children: <Widget>[_showLeagueInfo(league), _inviteToLeagueTile()],
+  Widget _creatingMode(Leagues league) {
+    return SingleChildScrollView(
+      child: Center(
+        child: Column(
+          children: <Widget>[_showLeagueInfo(league), _activateLeague()],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
-Widget _showLeagueInfo(Leagues league) {
-  return Padding(
-    padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8.0),
-    child: Container(
-      child: Card(
-        elevation: 15,
-        child: InkWell(
-          splashColor: Colors.blue.withAlpha(30),
-          onTap: () {},
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              new ListTile(
-                title: Text('Name of league: ${league.name}'),
-              ),
-            ],
+  Widget _showLeagueInfo(Leagues league) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8.0),
+      child: Container(
+        child: Card(
+          elevation: 15,
+          child: InkWell(
+            splashColor: Colors.blue.withAlpha(30),
+            onTap: () {},
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                new ListTile(
+                  title: Text('Name of league: ${league.name}'),
+                ),
+                new ListTile(
+                  title: Text('There are ${league.name} players in the league'),
+                ),
+              ],
+            ),
           ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 
-Widget _inviteToLeagueTile() {
-  return Padding(
-    padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8.0),
-    child: Container(
-      child: Card(
-        elevation: 15,
-        child: InkWell(
-          splashColor: Colors.blue.withAlpha(30),
-          onTap: () {},
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              const ListTile(
-                leading: Icon(Icons.add_circle_outline_outlined),
-                title: Text('Send Invites to League'),
-              ),
-            ],
+  Widget _activateLeague() {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8.0),
+      child: Container(
+        child: Card(
+          elevation: 15,
+          child: InkWell(
+            splashColor: Colors.blue.withAlpha(30),
+            onTap: () {},
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const ListTile(
+                  leading: Icon(Icons.add_circle_outline_outlined),
+                  title: Text('Activate League?'),
+                ),
+              ],
+            ),
           ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }

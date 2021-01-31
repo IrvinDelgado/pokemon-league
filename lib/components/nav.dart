@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:pokemon_league/components/api.dart';
-import 'package:pokemon_league/screens/league_invites.dart';
 import 'package:pokemon_league/screens/leagues.dart';
 import 'package:pokemon_league/screens/user_settings.dart';
 
@@ -29,14 +28,6 @@ class NavDrawer extends StatelessWidget {
             onTap: () => {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => LeagueList()))
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.group_add),
-            title: Text('Invites'),
-            onTap: () => {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => LeagueInvites()))
             },
           ),
           ListTile(
