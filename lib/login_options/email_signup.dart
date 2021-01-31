@@ -32,10 +32,7 @@ class _EmailSignUpState extends State<EmailSignUp> {
                 child: TextFormField(
                   controller: nameController,
                   decoration: InputDecoration(
-                    labelText: "Enter User Name",
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
+                    labelText: "Enter User Name...",
                   ),
                   validator: (value) {
                     if (value.isEmpty) {
@@ -50,10 +47,7 @@ class _EmailSignUpState extends State<EmailSignUp> {
                 child: TextFormField(
                   controller: emailController,
                   decoration: InputDecoration(
-                    labelText: "Enter Email",
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
+                    labelText: "Enter Email...",
                   ),
                   validator: (value) {
                     if (value.isEmpty) {
@@ -71,10 +65,7 @@ class _EmailSignUpState extends State<EmailSignUp> {
                   obscureText: true,
                   controller: passwordController,
                   decoration: InputDecoration(
-                    labelText: "Enter a Password",
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
+                    labelText: "Enter a Password...",
                   ),
                   validator: (value) {
                     if (value.isEmpty) {
@@ -92,10 +83,7 @@ class _EmailSignUpState extends State<EmailSignUp> {
                   obscureText: true,
                   controller: password2Controller,
                   decoration: InputDecoration(
-                    labelText: "Re-Enter Password",
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
+                    labelText: "Re-Enter Password...",
                   ),
                   validator: (value) {
                     if (value.isEmpty) {

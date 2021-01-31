@@ -26,6 +26,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _homeBody(leagueUID) {
+    if (leagueUID == '') {
+      return new Container(
+        child: Center(
+          child: Text('No League is Active'),
+        ),
+      );
+    }
     return new FutureBuilder(
       future: getLeagueData(leagueUID),
       builder: (context, snapshot) {
@@ -50,7 +57,10 @@ class _HomePageState extends State<HomePage> {
     return SingleChildScrollView(
       child: Center(
         child: Column(
-          children: <Widget>[_showLeagueInfo(league), _activateLeague()],
+          children: [
+            _showLeagueInfo(league),
+            _activateLeague(),
+          ],
         ),
       ),
     );
@@ -72,7 +82,8 @@ class _HomePageState extends State<HomePage> {
                   title: Text('Name of league: ${league.name}'),
                 ),
                 new ListTile(
-                  title: Text('There are ${league.name} players in the league'),
+                  leading: Icon(Icons.group),
+                  title: Text('${league.users.length}'),
                 ),
               ],
             ),
@@ -96,7 +107,7 @@ class _HomePageState extends State<HomePage> {
               children: <Widget>[
                 const ListTile(
                   leading: Icon(Icons.add_circle_outline_outlined),
-                  title: Text('Activate League?'),
+                  title: Text('Activate League'),
                 ),
               ],
             ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pokemon_league/components/api.dart';
+import 'package:pokemon_league/models/objects.dart';
 
 import 'package:pokemon_league/screens/home.dart';
 
@@ -30,14 +32,14 @@ class _EmailLoginState extends State<EmailLogin> {
                 child: TextFormField(
                   controller: nameController,
                   decoration: InputDecoration(
-                    labelText: "Enter User Name",
+                    labelText: "Enter Email Address",
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                   ),
                   validator: (value) {
                     if (value.isEmpty) {
-                      return 'Enter User Name';
+                      return 'Enter Email Address';
                     }
                     return null;
                   },
@@ -92,12 +94,15 @@ class _EmailLoginState extends State<EmailLogin> {
         .signInWithEmailAndPassword(
             email: nameController.text, password: passwordController.text)
         .then((result) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage(uid: result.user.uid)),
-      );
+      getUserData(result.user.uid).then((res) {
+        LeagueUser user = res;
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => HomePage(uid: user.leagueActive)),
+        );
+      });
     }).catchError((err) {
-      print("The Error Irvin is: " + err.message);
       showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -114,6 +119,9 @@ class _EmailLoginState extends State<EmailLogin> {
               ],
             );
           });
+    });
+    setState(() {
+      isLoading = false;
     });
   }
 

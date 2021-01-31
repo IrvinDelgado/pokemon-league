@@ -17,18 +17,18 @@ FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 void createUser(userUID, showDownUserName, context) {
   firestoreInstance.collection("users").doc(userUID).set({
     "losses": 0,
-    "pokemonTeam": [],
     "showDownUserName": showDownUserName,
     "teamName": showDownUserName,
     "wins": 0,
     "leaguesIn": [],
     "leaguesCreated": [],
     "leagueActive": "",
+    "imageUrl": "",
   }).then((res) {
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => HomePage(uid: userUID),
+          builder: (context) => HomePage(uid: ""),
         ));
   });
 }
@@ -57,6 +57,7 @@ void createLeague(leagueName, passcode) {
     "name": leagueName,
     "passcode": passcode,
     "creator": firebaseAuth.currentUser.uid,
+    "users": [],
     "creatingMode": 1,
   }).then((value) => addLeagueToUser(value.id, "leaguesCreated"));
 }

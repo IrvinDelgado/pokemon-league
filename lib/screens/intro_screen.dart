@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:pokemon_league/screens/leagues.dart';
 import 'package:splashscreen/splashscreen.dart';
 
 import 'package:pokemon_league/components/api.dart';
@@ -21,7 +20,7 @@ class _IntroScreenState extends State<IntroScreen> {
     if (result != null) {
       LeagueUser user = await getUserData(result.uid);
       if (user.leagueActive == '') {
-        return Future.value(LeagueList());
+        return Future.value(HomePage(uid: ""));
       }
       return Future.value(HomePage(uid: user.leagueActive));
     } else {
