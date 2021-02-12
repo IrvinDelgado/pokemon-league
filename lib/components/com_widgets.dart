@@ -77,6 +77,7 @@ Future<Widget> subscribeToLeague(leagueName, leagueUID, context) {
                 bool pass = await checkPasswordGiven(
                     passCodeController.text, leagueUID);
                 if (pass) {
+                  updateLeagueUsers(leagueUID);
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => LeagueList()),

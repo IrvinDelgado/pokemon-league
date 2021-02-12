@@ -94,6 +94,12 @@ Future<bool> checkPasswordGiven(passcode, docID) async {
   return false;
 }
 
+void updateLeagueUsers(String leagueUID) {
+  firestoreInstance.collection("leagues").doc(leagueUID).update({
+    "users": FieldValue.arrayUnion([firebaseAuth.currentUser.uid]),
+  });
+}
+
 void addLeagueToUser(leagueUID, leagueType) {
   firestoreInstance
       .collection("users")

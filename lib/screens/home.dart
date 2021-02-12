@@ -83,7 +83,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 new ListTile(
                   leading: Icon(Icons.group),
-                  title: Text('${league.users.length}'),
+                  title: Text('${league.users.length + 1}'),
                 ),
               ],
             ),
