@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pokemon_league/components/api.dart';
 
+import 'package:pokemon_league/components/api.dart';
 import 'package:pokemon_league/components/nav.dart';
 import 'package:pokemon_league/models/objects.dart';
+import 'package:pokemon_league/components/com_widgets.dart';
 
 class HomePage extends StatefulWidget {
   final String uid;
@@ -59,7 +60,9 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             _showLeagueInfo(league),
-            _activateLeague(),
+            _showCreator(league.creator),
+            _showPlayers(league),
+            _activateLeagueButton(),
           ],
         ),
       ),
@@ -93,7 +96,51 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _activateLeague() {
+  Widget _showCreator(String creatorUID) {
+    return FutureBuilder(
+        future: getUserData(creatorUID),
+        builder: (_, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            LeagueUser creator = snapshot.data;
+            return ListTile(
+              title: Text(creator.teamName),
+            );
+          } else {
+            return CircularProgressIndicator();
+          }
+        });
+  }
+
+  Widget _showPlayers(Leagues league) {
+    return ListView.separated(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      itemCount: league.users.length,
+      itemBuilder: (_, int index) {
+        String userUID = league.users[index];
+        return FutureBuilder(
+          future: getUserData(userUID),
+          builder: (_, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              LeagueUser user = snapshot.data;
+              return userProfileTile(user);
+            } else {
+              return CircularProgressIndicator();
+            }
+          },
+        );
+      },
+      separatorBuilder: (context, index) => finalTileDivider(),
+    );
+  }
+
+  Widget userProfileTile(LeagueUser user) {
+    return ListTile(
+      title: Text(user.teamName),
+    );
+  }
+
+  Widget _activateLeagueButton() {
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8.0),
       child: Container(
